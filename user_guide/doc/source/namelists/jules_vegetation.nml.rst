@@ -562,6 +562,43 @@ This file sets the vegetation options. It contains one namelist called :nml:lst:
       UM (Option 1).
 
 
+.. nml:member:: rd_model
+
+   :type: integer
+   :permitted: 1, 2, OR 3
+   :default: 1
+
+   Choice for the model of leaf dark respiration.
+
+   Possible values are:
+
+   1. The original JULES model from :ref:`Clark et al. (2011)<References_vegetation>`, Eqn. (13). Leaf dark respiration is a fixed fraction (:nml:mem:`JULES_PFTPARM::fd_io`) of Vcmax.
+
+   2. Leaf dark respiration is calculated using a PFT-dependent Q10 (:nml:mem:`JULES_PFTPARM::q10_leaf_io`) with temperature adjustment for low and high temperatures (:nml:mem:`JULES_PFTPARM::tlow_io` and :nml:mem:`JULES_PFTPARM::tupp_io`).
+
+      This option essentially allows the model to fall back to explicitly using the Collatz-style respiration functions when Farquhar photosynthesis is being used (:nml:mem:`photo_model` = 2). When Collatz photosynthesis is being used (:nml:mem:`photo_model` = 1) this is equivalent to using the original JULES respiration model, :nml:mem:`rd_model` = 1.
+
+   3. Leaf dark respiration is calculated using a Q10 that varies linearly with temperature. The same TDQ10 function is used for all PFTs but PFT-dependent `tstar` is used as an input.
+
+      This option can also be used to simulate a constant Q10 value `q`\ :sub:`10` by setting :nml:mem:`tdq10_slope` = 0.0 and :nml:mem:`tdq10_int` = `q`\ :sub:`10`\ :sup:`2`.
+
+.. nml:group:: Only used with the TDQ10 model of leaf dark respiration (:nml:mem:`rd_model` = 3).
+
+   .. nml:member:: tdq10_int
+
+      :type: real
+      :default: None
+
+      Intercept in Q10 linear temperature dependence (unitless).
+
+   .. nml:member:: tdq10_slope
+
+      :type: real
+      :default: None
+
+      Slope in Q10 linear temperature dependence (/degC).
+
+
 .. nml:member:: frac_min
 
    :type: real
